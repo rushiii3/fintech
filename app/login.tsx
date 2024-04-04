@@ -21,27 +21,30 @@ const Login = () => {
   const [ContryCode, setContryCode] = useState("+91");
   const [PhoneNumber, setPhoneNumber] = useState("");
   const KeyBoardVerticalOffSet = Platform.OS ? 80 : 40;
-  const {signIn} = useSignIn();
+  const { signIn } = useSignIn();
   const router = useRouter();
-  const onSubmit = async(type:SignType) => {
-    console.log(SignType.Phone);
-    
-  }
-  const Submit = async (type:SignType) => {
-    if (SignType.Phone) {
+
+  const onSubmit = async (type:SignType) => {
+    if (SignType.Phone===0) {
       console.log("in phonee");
       
       try {
         const fullphonenumber = `${ContryCode}${PhoneNumber}`;
-        // const {supportedFirstFactors} = await signIn!.create({identifier:fullphonenumber,}); 
-        // const firstPhoneFactor:any = supportedFirstFactors.find((factor:any)=>{
-        //   return factor.strategy==='phone_code';
-        // });
-        // const {phoneNumberId} = firstPhoneFactor;
-        // await signIn!.prepareFirstFactor({
-        //   strategy:'phone_code',
-        //   phoneNumberId
-        // });
+        console.log(fullphonenumber);
+        
+        const { supportedFirstFactors } = await signIn!.create({
+          identifier: fullphonenumber,
+        }); 
+        console.log(1);
+        const firstPhoneFactor:any = supportedFirstFactors.find((factor:any)=>{
+          return factor.strategy==='phone_code';
+        });
+        const {phoneNumberId} = firstPhoneFactor;
+        await signIn!.prepareFirstFactor({
+          strategy:'phone_code',
+          phoneNumberId
+        });
+        console.log(2);
         router.push({pathname :'/verify/[phone]',params:{phone:fullphonenumber,signin:'true'}})
 
       } catch (error) {
@@ -110,7 +113,7 @@ const Login = () => {
               backgroundColor: "white",
             },
           ]}
-          onPress={()=>{Submit(SignType.Email)}}
+          onPress={()=>{onSubmit(SignType.Email)}}
 
         >
           <Ionicons name="mail" size={34} color={Colors.dark} />
@@ -128,7 +131,7 @@ const Login = () => {
               backgroundColor: "white",
             },
           ]}
-          onPress={()=>{Submit(SignType.Google)}}
+          onPress={()=>{onSubmit(SignType.Google)}}
 
         >
           <Ionicons name="logo-google" size={34} color={Colors.dark} />
@@ -146,7 +149,7 @@ const Login = () => {
               backgroundColor: "white",
             },
           ]}
-          onPress={()=>{Submit(SignType.Apple)}}
+          onPress={()=>{onSubmit(SignType.Apple)}}
 
         >
           <Ionicons name="logo-apple" size={34} color={Colors.dark} />

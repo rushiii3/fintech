@@ -1,15 +1,20 @@
-
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { Link, Stack, router, useRouter } from "expo-router";
+import { Link, Stack, router, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useColorScheme } from "@/components/useColorScheme";
 import Colors from "@/constants/Colors";
-import { TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import * as SecureStore from "expo-secure-store";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+const queryClient = new QueryClient()
+
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 export {
   // Catch any errors thrown by the Layout component.
@@ -42,13 +47,13 @@ SplashScreen.preventAutoHideAsync();
 
 const InitalLayout = () => {
   const router = useRouter();
-  const {isLoaded, isSignedIn} = useAuth();
+  const { isLoaded, isSignedIn } = useAuth();
+  const segments = useSegments();
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
 
-  
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -56,6 +61,13 @@ const InitalLayout = () => {
 
   useEffect(() => {
     console.log(isSignedIn);
+    if (!isLoaded) return;
+    const inAuthGroup = segments[0] === "(authenticated)";
+    if (isSignedIn && !inAuthGroup) {
+      router.replace("/(authenticated)/(tabs)/crypto");
+    } else if (!isSignedIn) {
+      router.replace("/login");
+    }
   }, [isSignedIn]);
 
   useEffect(() => {
@@ -64,91 +76,100 @@ const InitalLayout = () => {
     }
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
+  if (!loaded || !isLoaded) {
+    return <Text>Loading...</Text>;
   }
 
   return (
     <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="signup"
-          options={{
-            title: "",
-            headerBackTitle: "",
-            headerShadowVisible: false,
-            headerStyle: { backgroundColor: Colors.background },
-            headerLeft: () => (
-              <TouchableOpacity onPress={router.back}>
-                <Ionicons name="arrow-back" size={34} color={Colors.dark} />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="signup"
+        options={{
+          title: "",
+          headerBackTitle: "",
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: Colors.background },
+          headerLeft: () => (
+            <TouchableOpacity onPress={router.back}>
+              <Ionicons name="arrow-back" size={34} color={Colors.dark} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="login"
+        options={{
+          title: "",
+          headerBackTitle: "",
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: Colors.background },
+          headerLeft: () => (
+            <TouchableOpacity onPress={router.back}>
+              <Ionicons name="arrow-back" size={34} color={Colors.dark} />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <Link href={"/helper"} asChild>
+              <TouchableOpacity>
+                <Ionicons
+                  name="help-circle-outline"
+                  size={34}
+                  color={Colors.dark}
+                />
               </TouchableOpacity>
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="login"
-          options={{
-            title: "",
-            headerBackTitle: "",
-            headerShadowVisible: false,
-            headerStyle: { backgroundColor: Colors.background },
-            headerLeft: () => (
-              <TouchableOpacity onPress={router.back}>
-                <Ionicons name="arrow-back" size={34} color={Colors.dark} />
+            </Link>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="helper"
+        options={{ title: "Help", presentation: "modal" }}
+      />
+      <Stack.Screen
+        name="verify/[phone]"
+        options={{
+          title: "",
+          headerBackTitle: "",
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: Colors.background },
+          headerLeft: () => (
+            <TouchableOpacity onPress={router.back}>
+              <Ionicons name="arrow-back" size={34} color={Colors.dark} />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <Link href={"/helper"} asChild>
+              <TouchableOpacity>
+                <Ionicons
+                  name="help-circle-outline"
+                  size={34}
+                  color={Colors.dark}
+                />
               </TouchableOpacity>
-            ),
-            headerRight: () => (
-              <Link href={"/helper"} asChild>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="help-circle-outline"
-                    size={34}
-                    color={Colors.dark}
-                  />
-                </TouchableOpacity>
-              </Link>
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="helper"
-          options={{ title: "Help", presentation: "modal" }}
-        />
-        <Stack.Screen
-          name="verify/[phone]"
-          options={{
-            title: "",
-            headerBackTitle: "",
-            headerShadowVisible: false,
-            headerStyle: { backgroundColor: Colors.background },
-            headerLeft: () => (
-              <TouchableOpacity onPress={router.back}>
-                <Ionicons name="arrow-back" size={34} color={Colors.dark} />
-              </TouchableOpacity>
-            ),
-            headerRight: () => (
-              <Link href={"/helper"} asChild>
-                <TouchableOpacity>
-                  <Ionicons
-                    name="help-circle-outline"
-                    size={34}
-                    color={Colors.dark}
-                  />
-                </TouchableOpacity>
-              </Link>
-            ),
-          }}
-        />
-      </Stack>
+            </Link>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="(authenticated)/(tabs)"
+        options={{ headerShown: false }}
+      />
+    </Stack>
   );
-}
+};
 
 const RootLayoutNav = () => {
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
+    <ClerkProvider
+      publishableKey={CLERK_PUBLISHABLE_KEY!}
+      tokenCache={tokenCache}
+    >
+      <QueryClientProvider client={queryClient}>
       <InitalLayout />
+      </QueryClientProvider>
+      
     </ClerkProvider>
-    
   );
-}
+};
 export default RootLayoutNav;
