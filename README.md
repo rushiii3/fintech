@@ -2,6 +2,15 @@ Fintech React App
 
 App Preview
 <img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" />
+
+<img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" />
+<img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" />
+<img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" />
+<img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" />
+<img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" />
+<img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" />
+<img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" />
+<img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" />
 ![Simulator Screenshot - iPhone 15 Pro Max - 2024-04-27 at 14 18 48](https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e)
 ![Simulator Screenshot - iPhone 15 Pro Max - 2024-04-27 at 14 33 19](https://github.com/rushiii3/fintech/assets/105168088/bf25b41f-d0dd-4964-88d0-dcad460dea98)
 ![Simulator Screenshot - iPhone 15 Pro Max - 2024-04-27 at 14 23 07](https://github.com/rushiii3/fintech/assets/105168088/7c296754-2568-448b-b432-ad2426fad1ac)
