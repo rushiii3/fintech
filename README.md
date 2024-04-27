@@ -2,6 +2,10 @@ Fintech React App
 
 App Preview
 
+https://github.com/rushiii3/fintech/assets/105168088/ea20baa2-70e3-4320-932e-81ae3f5d7785
+
+
+
 
 <img src="https://github.com/rushiii3/fintech/assets/105168088/4eaa7159-da99-44c9-af36-894d3902875e" height="600" width="300" style="padding:12px" />
 <img src="https://github.com/rushiii3/fintech/assets/105168088/bf25b41f-d0dd-4964-88d0-dcad460dea98" height="600" width="300" />
